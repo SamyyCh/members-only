@@ -1,18 +1,32 @@
 /////// app.js
 
-const { Pool } = require("pg");
 const express = require("express");
 const session = require("express-session");
-const passport = require("passport");
+const flash = require("connect-flash");
+const passports = require("passport");
+const passport = require("./middlewares/passport");
+const memberRouter = require("./routes/memberRouter");
+const path = require("path");
 
 const app = express();
-app.set("views", __dirname);
+
+app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-app.use(session({ secret: "", resave: false, saveUninitialized: false }));
-app.use(passport.session());
+app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.get("/", (req, res) => res.render("index"));
+app.use(session({ 
+  secret: "cats", 
+  resave: false, 
+  saveUninitialized: false 
+}));
+
+app.use(flash());
+
+app.use(passports.initialize());
+app.use(passports.session());
+
+app.use("/", memberRouter);
 
 app.listen(3000, () => console.log("app listening on port 3000!"));
