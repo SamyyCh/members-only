@@ -6,11 +6,18 @@
 </head>
 <body>
   <h1>Sign Up</h1>
+  <%- include("partials/errors") %>
   <form action="/sign-up" method="POST">
+    <label for="first">First Name</label>
+    <input id="first" name="first" placeholder="Joe" type="text" required/>
+    <label for="last">Last Name</label>
+    <input id="last" name="last" placeholder="Smith" type="text" required/>
     <label for="username">Username</label>
     <input id="username" name="username" placeholder="username" type="text" required/>
     <label for="password">Password</label>
     <input id="password" name="password" type="password" required/>
+    <label for="confirmPassword">Confirm Password</label>
+    <input id="confirmPassword" name="confirmPassword" type="password" required/>
     <button>Sign Up</button>
   </form>
 </body>
