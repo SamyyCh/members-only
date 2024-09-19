@@ -9,9 +9,23 @@ async function renderIndex(req, res) {
     res.render("index");
 }
 
-async function renderMembers(req, res) {
-    res.render("members", { user: req.user });
-}  
+async function renderMembers(req, res, next) {
+    try {
+        const query = `
+            SELECT title, message, username, time
+            FROM public.messages
+            ORDER BY time DESC
+        `;
+        const result = await pool.query(query);
+
+        res.render('members', { 
+            user: req.user, 
+            messages: result.rows 
+        });
+    } catch (err) {
+        return next(err);
+    }
+}
 
 async function getSignUp(req, res) {
     res.render("sign-up-form")
@@ -66,6 +80,25 @@ async function logOut(req, res) {
         res.redirect('/log-in');
     });
 }
+
+async function getMessage(req, res) {
+    res.render("message-form")
+}
+
+async function postMessage(req, res, next) {
+    try {
+        const { title, message } = req.body;
+        const userId = req.user.id;
+
+        await pool.query(
+            "INSERT INTO messages (title, message, user_id, time) VALUES ($1, $2, $3, NOW())",
+            [title, message, userId]
+        );
+        res.redirect("/members");
+    } catch (err) {
+        next(err);
+    }
+}
   
 
 module.exports = {
@@ -75,5 +108,7 @@ module.exports = {
     getLogin,
     postLogin,
     renderMembers,
-    logOut
+    logOut,
+    getMessage,
+    postMessage
 };

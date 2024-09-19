@@ -1,0 +1,19 @@
+<!--message-form.ejs-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>New Message</title>
+</head>
+<body>
+  <h1>Message</h1>
+  <%- include("partials/errors") %>
+    <form action="/new-message" method="POST">
+        <ul>
+            <li><input placeholder="Title" name="title" type="text" value="" required></li>
+            <li><textarea placeholder="Message" name="message" required></textarea></li>
+        </ul>
+        <button type="submit">Post</button> 
+    </form>
+</body>
+</html>
