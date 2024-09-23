@@ -12,17 +12,18 @@ async function renderIndex(req, res) {
 async function renderMembers(req, res, next) {
     try {
         const query = `
-            SELECT title, message, username, time
-            FROM public.messages
-            ORDER BY time DESC
+        SELECT username, title, message, message_time FROM users;
         `;
+        console.log("Executing query:", query);
         const result = await pool.query(query);
+        console.log("Query result:", result.rows);
 
         res.render('members', { 
             user: req.user, 
             messages: result.rows 
         });
     } catch (err) {
+        console.error("Error fetching messages:", err);
         return next(err);
     }
 }
@@ -91,7 +92,7 @@ async function postMessage(req, res, next) {
         const userId = req.user.id;
 
         await pool.query(
-            "INSERT INTO messages (title, message, user_id, time) VALUES ($1, $2, $3, NOW())",
+            "UPDATE users SET title = $1, message = $2, message_time = NOW() WHERE id = $3",
             [title, message, userId]
         );
         res.redirect("/members");

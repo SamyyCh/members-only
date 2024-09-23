@@ -14,17 +14,19 @@
   <h2>Messages:</h2>
   <% if (messages.length > 0) { %>
     <ul>
-      <% messages.forEach(function(message) { %>
-        <li>
-          <h3><%= message.title %></h3>
-          <p><%= message.message %></p>
-          <small>Posted by <%= message.username %> on <%= new Date(message.time).toLocaleString() %></small>
-        </li>
+      <% messages.forEach(function(user) { %>
+        <% if (user.title && user.message) { %>
+          <li>
+            <h3><%= user.title %></h3>
+            <p><%= user.message %></p>
+            <small>Posted by <%= user.username %> on <%= new Date(user.message_time).toLocaleString() %></small>
+          </li>
+        <% } %>
       <% }) %>
     </ul>
   <% } else { %>
     <p>No messages yet.</p>
-  <% } %>
+  <% } %>  
 
 </body>
 </html>

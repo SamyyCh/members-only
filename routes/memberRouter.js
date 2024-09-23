@@ -11,6 +11,6 @@ memberRouter.post("/log-in", membersController.postLogin);
 memberRouter.get("/members", ensureAuthenticated, membersController.renderMembers);
 memberRouter.get("/log-out", membersController.logOut);
 memberRouter.get("/new-message", membersController.getMessage);
-memberRouter.post("/new-message", membersController.postMessage);
+memberRouter.post('/new-message', membersController.postMessage);
 
 module.exports = memberRouter;

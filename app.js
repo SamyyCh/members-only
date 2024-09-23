@@ -7,6 +7,7 @@ const passports = require("passport");
 const passport = require("./middlewares/passport");
 const memberRouter = require("./routes/memberRouter");
 const path = require("path");
+require('dotenv').config();
 
 const app = express();
 
