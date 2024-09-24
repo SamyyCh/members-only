@@ -1,5 +1,6 @@
 /////// app.js
 
+require('dotenv').config();
 const express = require("express");
 const session = require("express-session");
 const flash = require("connect-flash");
@@ -7,8 +8,6 @@ const passports = require("passport");
 const passport = require("./middlewares/passport");
 const memberRouter = require("./routes/memberRouter");
 const path = require("path");
-require('dotenv').config();
-
 const app = express();
 
 app.set("views", path.join(__dirname, "views"));

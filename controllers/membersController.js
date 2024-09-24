@@ -1,32 +1,51 @@
 //membersController.js
 
-const pool = require("../db/pool")
+const pool = require("../db/pool");
 const passport = require("passport");
 const bcrypt = require("bcryptjs");
 const { check, validationResult } = require("express-validator");
 
-async function renderIndex(req, res) {
-    res.render("index");
-}
-
-async function renderMembers(req, res, next) {
+async function renderIndex(req, res, next) {
     try {
         const query = `
-        SELECT username, title, message, message_time FROM users;
+          SELECT u.username, m.title, m.message, m.time
+          FROM users u
+          JOIN messages m ON u.id = m.user_id
+          ORDER BY m.time DESC;
         `;
-        console.log("Executing query:", query);
         const result = await pool.query(query);
-        console.log("Query result:", result.rows);
-
-        res.render('members', { 
-            user: req.user, 
-            messages: result.rows 
+        
+        res.render('index', { 
+          user: req.user, 
+          messages: result.rows, 
+          adminUsername: process.env.ADMIN_USERNAME 
         });
-    } catch (err) {
+      } catch (err) {
         console.error("Error fetching messages:", err);
-        return next(err);
-    }
+        next(err);
+      }
 }
+
+const renderMembers = async (req, res, next) => {
+    try {
+      const query = `
+        SELECT u.username, m.title, m.message, m.time
+        FROM users u
+        JOIN messages m ON u.id = m.user_id
+        ORDER BY m.time DESC;
+      `;
+      const result = await pool.query(query);
+      
+      res.render('members', { 
+        user: req.user, 
+        messages: result.rows, 
+        adminUsername: process.env.ADMIN_USERNAME 
+      });
+    } catch (err) {
+      console.error("Error fetching messages:", err);
+      next(err);
+    }
+  };  
 
 async function getSignUp(req, res) {
     res.render("sign-up-form")
@@ -87,19 +106,20 @@ async function getMessage(req, res) {
 }
 
 async function postMessage(req, res, next) {
-    try {
-        const { title, message } = req.body;
-        const userId = req.user.id;
-
-        await pool.query(
-            "UPDATE users SET title = $1, message = $2, message_time = NOW() WHERE id = $3",
-            [title, message, userId]
-        );
-        res.redirect("/members");
-    } catch (err) {
-        next(err);
+    console.log(req.user);
+    if (!req.user) {
+      return res.status(401).send('User not authenticated');
     }
-}
+    try {
+      const { title, message } = req.body;
+      const query = `INSERT INTO messages (user_id, title, message, time) VALUES ($1, $2, $3, NOW())`;
+      await pool.query(query, [req.user.id, title, message]);
+      res.redirect('/members');
+    } catch (err) {
+      console.error('Error posting message:', err);
+      return next(err);
+    }
+  }  
   
 
 module.exports = {
