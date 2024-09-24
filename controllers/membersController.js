@@ -29,7 +29,7 @@ async function renderIndex(req, res, next) {
 const renderMembers = async (req, res, next) => {
     try {
       const query = `
-        SELECT u.username, m.title, m.message, m.time
+        SELECT u.username, m.title, m.message, m.time, m.id
         FROM users u
         JOIN messages m ON u.id = m.user_id
         ORDER BY m.time DESC;
@@ -106,7 +106,6 @@ async function getMessage(req, res) {
 }
 
 async function postMessage(req, res, next) {
-    console.log(req.user);
     if (!req.user) {
       return res.status(401).send('User not authenticated');
     }
@@ -119,8 +118,23 @@ async function postMessage(req, res, next) {
       console.error('Error posting message:', err);
       return next(err);
     }
-  }  
-  
+  }
+
+  async function deleteMessage(req, res) {
+    const id = req.params.id;
+    if (!id) {
+        console.error("No ID provided");
+        return res.status(400).send("Bad Request: No ID provided");
+    }
+    const query = "DELETE FROM messages WHERE id = $1";
+    try {
+        await pool.query(query, [id]);
+        res.redirect("/members");
+    } catch (err) {
+        console.error("Error deleting message:", err);
+        res.status(500).send("Error deleting message");
+    }
+}
 
 module.exports = {
     renderIndex,
@@ -131,5 +145,6 @@ module.exports = {
     renderMembers,
     logOut,
     getMessage,
-    postMessage
+    postMessage,
+    deleteMessage
 };

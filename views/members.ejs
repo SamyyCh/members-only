@@ -17,10 +17,12 @@
       <ul>
         <% messages.forEach(function(message) { %>
           <li>
-            <h3><%= message.username %> - <%= message.title %></h3>
+            <h3><%= message.username %> - <%= message.title %> - ID : <%= message.id %></h3>
             <p><%= message.message %></p>
             <small>Posted on <%= new Date(message.time).toLocaleString() %></small>
-            <button>Delete</button>
+            <form action="/delete/<%= message.id %>" method="POST" style="display:inline;">
+              <button type="submit">Delete</button>
+            </form>
           </li>
         <% }) %>
       </ul>

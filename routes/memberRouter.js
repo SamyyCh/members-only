@@ -12,5 +12,6 @@ memberRouter.get("/members", ensureAuthenticated, membersController.renderMember
 memberRouter.get("/log-out", membersController.logOut);
 memberRouter.get("/new-message", membersController.getMessage);
 memberRouter.post('/new-message', membersController.postMessage);
+memberRouter.post("/delete/:id", membersController.deleteMessage);
 
 module.exports = memberRouter;
