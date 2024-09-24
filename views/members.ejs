@@ -12,21 +12,35 @@
   <a href="/log-out">Log Out</a>
 
   <h2>Messages:</h2>
-  <% if (messages.length > 0) { %>
-    <ul>
-      <% messages.forEach(function(user) { %>
-        <% if (user.title && user.message) { %>
+  <% if (user.username === adminUsername) { %>
+    <% if (messages.length > 0) { %>
+      <ul>
+        <% messages.forEach(function(message) { %>
           <li>
-            <h3><%= user.title %></h3>
-            <p><%= user.message %></p>
-            <small>Posted by <%= user.username %> on <%= new Date(user.message_time).toLocaleString() %></small>
+            <h3><%= message.username %> - <%= message.title %></h3>
+            <p><%= message.message %></p>
+            <small>Posted on <%= new Date(message.time).toLocaleString() %></small>
+            <button>Delete</button>
           </li>
-        <% } %>
-      <% }) %>
-    </ul>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <p>No messages yet.</p>
+    <% } %> 
   <% } else { %>
-    <p>No messages yet.</p>
-  <% } %>  
-
+    <% if (messages.length > 0) { %>
+      <ul>
+        <% messages.forEach(function(message) { %>
+          <li>
+            <h3><%= message.username %> - <%= message.title %></h3>
+            <p><%= message.message %></p>
+            <small>Posted on <%= new Date(message.time).toLocaleString() %></small>
+          </li>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <p>No messages yet.</p>
+    <% } %> 
+  <% } %>
 </body>
 </html>

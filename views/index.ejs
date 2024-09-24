@@ -6,10 +6,22 @@
   <title></title>
 </head>
 <body>
-  <h1>You are NOT logged in</h1>
+  <h1>Welcome, <%= user ? user.username : 'Not Logged In' %>!</h1>
   <ul>
     <li><a href="/log-in">Log in</a></li>
     <li><a href="/sign-up">Sign up</a></li>
   </ul>
+  <% if (messages.length > 0) { %>
+    <ul>
+      <% messages.forEach(function(message) { %>
+        <li>
+          <h3><%= user ? message.username : 'Hidden' %> - <%= message.title %></h3>
+          <p><%= message.message %></p>
+        </li>
+      <% }) %>
+    </ul>
+  <% } else { %>
+    <p>No messages yet.</p>
+  <% } %> 
 </body>
 </html>
