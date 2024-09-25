@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="/stylesheets/styles.css">
   <title>Log In</title>
 </head>
 <body>
+  <h1>Log In</h1>
   <% if (messages.error && messages.error.length > 0) { %>
     <div class="error">
       <% messages.error.forEach(msg => { %>
@@ -20,6 +22,9 @@
     <input id="password" name="password" type="password" required />
     <button type="submit">Log In</button>
   </form>
-  <a href="/sign-up">Sign up</a>
+  <ul>
+    <li><a href="/sign-up">Sign up</a></li>
+    <li><a href="/">Home</a></li>
+  </ul>
 </body>
 </html>

@@ -3,10 +3,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="/stylesheets/message.css">
   <title>New Message</title>
 </head>
 <body>
-  <h1>Message</h1>
+  <h1>New Message:</h1>
   <%- include("partials/errors") %>
     <form action="/new-message" method="POST">
         <ul>
@@ -15,5 +16,6 @@
         </ul>
         <button type="submit">Post</button> 
     </form>
+  <a id="members" href="/members">Back</a>
 </body>
 </html>
