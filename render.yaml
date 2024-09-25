@@ -14,7 +14,6 @@ services:
 
 databases:
   - name: members-only-db
-    engine: postgresql
     plan: free
-    defaultDatabaseName: members_only_db
     user: samy
+    databaseName: members_only_db
