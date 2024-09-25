@@ -20,7 +20,7 @@
           <li>
             <h3><%= message.username %> - <%= message.title %> - ID : <%= message.id %></h3>
             <p><%= message.message %></p>
-            <small>Posted on <%= new Date(message.time).toLocaleString() %></small>
+            <small>Posted on <%= new Date(message.time).toLocaleDateString('en-US', { month: 'long', day: 'numeric' }) %></small>
             <form action="/delete/<%= message.id %>" method="POST" style="display:inline;">
               <button type="submit">Delete</button>
             </form>
@@ -37,7 +37,7 @@
           <li>
             <h3><%= message.username %> - <%= message.title %></h3>
             <p><%= message.message %></p>
-            <small>Posted on <%= new Date(message.time).toLocaleString() %></small>
+            <small>Posted on <%= new Date(message.time).toLocaleDateString('en-US', { month: 'long', day: 'numeric' }) %></small>
           </li>
         <% }) %>
       </ul>
