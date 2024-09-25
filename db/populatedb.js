@@ -1,31 +1,39 @@
-#! /usr/bin/env node
+// populatedb.js
 
 const { Client } = require("pg");
+require("dotenv").config();
 
 const SQL = `
-CREATE TABLE IF NOT EXISTS messages (
-  id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  first VARCHAR (255),
-  last VARCHAR (255),
-  username VARCHAR (255),
-  password VARCHAR (255),
-  membership VARCHAR (255),
-  time VARCHAR (255)
+CREATE TABLE IF NOT EXISTS users (
+  id SERIAL PRIMARY KEY,
+  username VARCHAR(50) UNIQUE NOT NULL,
+  password VARCHAR(100) NOT NULL
 );
 
-INSERT INTO messages (first, last, username, password, membership, time) 
-VALUES
+CREATE TABLE IF NOT EXISTS messages (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  title VARCHAR(100) NOT NULL,
+  message TEXT NOT NULL,
+  time TIMESTAMP DEFAULT NOW()
+);
 `;
 
 async function main() {
-  console.log("seeding...");
+  console.log("Seeding database...");
   const client = new Client({
-    connectionString: "",
+    connectionString: process.env.DATABASE_URL
   });
-  await client.connect();
-  await client.query(SQL);
-  await client.end();
-  console.log("done");
+
+  try {
+    await client.connect();
+    await client.query(SQL);
+    console.log("Database seeded successfully.");
+  } catch (error) {
+    console.error("Error seeding database:", error);
+  } finally {
+    await client.end();
+  }
 }
 
 main();
