@@ -4,7 +4,7 @@ Welcome to the Members Only application! This project is a simple web applicatio
 
 ## Live Demo
 
-You can try out the live version of the application [here](https://members-only-app-chzq.onrender.com/).
+You can try out the live version of the application [here]([https://members-only-app-chzq.onrender.com/](https://members-only-staging-f60e.up.railway.app/)).
 
 ## Features
 
